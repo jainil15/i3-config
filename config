@@ -9,17 +9,35 @@ exec --no-startup-id xrandr --auto
 # this file and re-run i3-config-wizard(1).
 #
 
+hide_edge_borders both 
+for_window [class="^.*"] border pixel 0
+default_border none
+# Configure 5px of space between windows and to the screen edges.
+gaps inner 4px
+# Configure an additional 5px of extra space to the screen edges,
+# for a total gap of 10px to the screen edges, and 5px between windows.
+gaps outer 4px
 # i3 config file (v4)
 #
+exec_always --no-startup-id (sleep 5 && xset r rate 300 50)
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
-
 set $mod Mod4
-
 # set $mod Mod2
+
+
 # start picom
 # exec --no-startup-id picom --config ~/.config/picom/picom.conf -b
-exec --no-startup-id picom -b
+exec --no-startup-id picom -b --experimental-backends
 # end picom
+
+# clipboard
+exec --no-startup-id greenclip daemon
+bindsym $mod+V exec /home/jainil/.config/rofi/scripts/launcher_t4
+# end clipboard
+
+# screenshot
+bindsym $mod+shift+s exec flameshot gui
+# end screenshot
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -34,15 +52,15 @@ client.unfocused #111111 #111111 #333333 #333333
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 
 # Changing font
-# font pango:JetBrainsMono Nerd Font 8
-font pango:DejaVu Sans Mono 8
+font pango:JetBrainsMono Nerd Font 10
+# font pango:DejaVu Sans Mono 10
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
 
 # start feh for wallpaper
-exec --no-startup-id feh --bg-scale ~/.config/backgrounds/black_galaxy_bg.png
+exec_always --no-startup-id feh --bg-scale ~/.config/backgrounds/wallhaven-3l6g83_3440x1440.png
 # end feh wallpaper
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
@@ -73,7 +91,8 @@ bindsym $mod+Return exec kitty
 bindsym $mod+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop 
+# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop 
+bindsym $mod+d exec --no-startup-id /home/jainil/.config/rofi/scripts/launcher_t3
 #A more modern dmenu replacement is rofi:
 # bindcode $mod+40 exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
@@ -108,7 +127,7 @@ bindsym $mod+Shift+Right move right
 bindsym $mod+z split h
 
 # split in vertical orientation
-bindsym $mod+v split v
+bindsym $mod+\ split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -185,7 +204,7 @@ mode "resize" {
 # Pressing right will grow the window’s width.
 # Pressing up will shrink the window’s height.
 # Pressing down will grow the window’s height.
-  bindsym h resize shrink width 10 px or 10 ppt
+    bindsym h resize shrink width 10 px or 10 ppt
     bindsym j resize grow height 10 px or 10 ppt
     bindsym k resize shrink height 10 px or 10 ppt
     bindsym l resize grow width 10 px or 10 ppt
@@ -202,11 +221,15 @@ mode "resize" {
     bindsym $mod+r mode "default"
 }
 
-bindsym $mod+r mode "resize"
+bindsym $mod+Alt+r mode "resize"
 
+bindsym $mod+Shift+x exec /home/jainil/.config/rofi/scripts/powermenu_t1
+# exec_always --no-startup-id bash ~/.config/polybar/launch.sh --shapes
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
+# exec_always --no-startup-id /home/jainil/.config/polybar/polybar.sh
 # I have changed the colors delete this for default colors
+   
 bar {
   mode hide
     status_command i3status 
